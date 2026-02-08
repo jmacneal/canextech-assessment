@@ -53,5 +53,9 @@ flash: build
 	docker run $(DOCKER_RUN_FLAGS) $(IMAGE_NAME):$(IMAGE_TAG) \
 		bash -c "cd /workspace/Linux_for_Tegra && ./flash.sh --no-root-check $(BOARD) $(ROOTDEV)"
 
+mender_install: build
+	docker run $(DOCKER_RUN_FLAGS) $(IMAGE_NAME):$(IMAGE_TAG) \
+		bash -c "cd /workspace/Linux_for_Tegra && cp ../mender/*.deb nv_tegra/l4t_deb_packages/ && rm rootfs/dev/* && ./apply_binaries.sh"
+
 clean:
 	docker rmi -f $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest || true
